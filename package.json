@@ -2,18 +2,42 @@
   "name": "ts-ds",
   "version": "0.0.0",
   "description": "Typescript Datastructures",
-  "main": "index.js",
   "author": "zwarag <harrys.kavan@protonmail.com>",
   "license": "MIT",
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "src"
+  ],
+  "engines": {
+    "node": ">=10"
+  },
+  "module": "dist/ts-ds.esm.js",
   "scripts": {
-    "test": "jest"
+    "start": "tsdx watch",
+    "build": "tsdx build",
+    "test": "tsdx test",
+    "lint": "tsdx lint",
+    "prepare": "tsdx build"
   },
   "devDependencies": {
-    "@babel/core": "^7.11.6",
-    "@babel/preset-env": "^7.11.5",
-    "@babel/preset-typescript": "^7.10.4",
-    "@types/jest": "^26.0.13",
-    "babel-jest": "^26.3.0",
-    "jest": "^26.4.2"
+    "jest": "^26.4.2",
+    "husky": "^4.3.0",
+    "tsdx": "^0.13.3",
+    "tslib": "^2.0.1",
+    "typescript": "^4.0.2"
+  },
+  "peerDependencies": {},
+  "husky": {
+    "hooks": {
+      "pre-commit": "tsdx lint --fix"
+    }
+  },
+  "prettier": {
+    "printWidth": 80,
+    "semi": true,
+    "singleQuote": true,
+    "trailingComma": "es5"
   }
 }
