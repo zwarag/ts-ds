@@ -1,10 +1,22 @@
 {
-  "name": "ts-ds",
-  "version": "0.0.0",
+  "name": "@zwarag/ts-ds",
+  "version": "0.1.0",
   "description": "Typescript Datastructures",
   "author": "zwarag <harrys.kavan@protonmail.com>",
   "license": "MIT",
   "main": "dist/index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zwarag/ts-ds.git"
+  },
+  "keywords": [
+    "typescript",
+    "datastructure"
+  ],
+  "bugs": {
+    "url": "https://github.com/zwarag/ts-ds/issues"
+  },
+  "homepage": "https://github.com/zwarag/ts-ds#readme",
   "typings": "dist/index.d.ts",
   "files": [
     "dist",
@@ -19,11 +31,12 @@
     "build": "tsdx build",
     "test": "tsdx test",
     "lint": "tsdx lint",
-    "prepare": "tsdx build"
+    "prepare": "tsdx build",
+    "publish": "npm publish --access public"
   },
   "devDependencies": {
-    "jest": "^26.4.2",
     "husky": "^4.3.0",
+    "jest": "^26.4.2",
     "tsdx": "^0.13.3",
     "tslib": "^2.0.1",
     "typescript": "^4.0.2"
