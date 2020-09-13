@@ -1,0 +1,22 @@
+{
+    "compilerOptions": {
+        "outDir": "./build",
+        "target": "es6",
+        "lib": [
+            "esnext",
+            "dom"
+        ],
+        "module": "ESNext",
+        "moduleResolution": "node",
+        "strict": true,
+        "allowJs": true,
+        "sourceMap": true,
+        "inlineSources": true,
+        "types": [
+            "node",
+            "jest"
+        ],
+        "allowSyntheticDefaultImports": true,
+        "experimentalDecorators": true
+    }
+}
