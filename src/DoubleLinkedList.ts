@@ -3,7 +3,7 @@ class Elem<T> {
   next: Elem<T> | null;
   previous: Elem<T> | null;
 
-  constructor(value: T, next?: Elem<T> | null, previous?: Elem<T> | null) {
+  constructor(value: T, previous?: Elem<T> | null, next?: Elem<T> | null) {
     this.value = value;
     this.next = next ? next : null;
     this.previous = previous ? previous : null;
@@ -11,54 +11,66 @@ class Elem<T> {
 }
 
 export class DoubleLinkedList<T> {
-  head: Elem<T> | null;
-  tail: Elem<T> | null;
-  length: number = 0;
+  private _head: Elem<T> | null;
+  private _tail: Elem<T> | null;
+  private _length: number = 0;
   readonly unique: boolean;
 
   constructor(elem?: Elem<T> | null, unique?: boolean) {
-    this.head = elem ? elem : null;
-    this.tail = elem ? elem : null;
+    this._head = elem ? elem : null;
+    this._tail = elem ? elem : null;
     this.unique = !!unique;
+  }
+
+  get length(): number {
+    return this._length;
+  }
+
+  get head(): Elem<T> | null {
+    return this._head;
+  }
+
+  get tail(): Elem<T> | null {
+    return this._tail;
   }
 
   append(value: T): void {
     if (this.unique && !this.isUnique(value)) {
       return;
     }
-    let candidate = this.head;
+    let candidate = this._head;
 
     if (!candidate) {
-      this.head = new Elem(value);
-      this.tail = this.head;
+      this._head = new Elem(value);
+      this._tail = this._head;
     } else {
-      if (this.tail) {
-        this.tail.next = new Elem<T>(value, null, this.tail);
-        this.tail = this.tail.next;
+      if (this._tail) {
+        this._tail.next = new Elem<T>(value, this._tail, null);
+        this._tail = this._tail.next;
       }
     }
 
-    this.length++;
+    this._length++;
   }
 
   prepend(value: T): void {
     if (this.unique && !this.isUnique(value)) {
       return;
     }
-    let candidate = this.head;
+    let candidate = this._head;
 
     if (!candidate) {
-      this.head = new Elem(value);
-      this.tail = this.head;
+      this._head = new Elem(value);
+      this._tail = this._head;
     } else {
-      this.head = new Elem<T>(value, this.head, null);
+      this._head = new Elem<T>(value, null, this._head);
     }
 
-    this.length++;
+    this._length++;
   }
 
   insert(value: T): void {
-    if (!this.head) {
+    if (!this._head) {
       this.append(value);
       return;
     }
@@ -67,7 +79,7 @@ export class DoubleLinkedList<T> {
       return;
     }
 
-    let candidate: Elem<T> = this.head;
+    let candidate: Elem<T> = this._head;
     let newElem = new Elem(value);
     let run = true;
     while (run) {
@@ -77,12 +89,12 @@ export class DoubleLinkedList<T> {
         } else {
           candidate.next = newElem;
           newElem.previous = candidate;
-          this.tail = newElem;
+          this._tail = newElem;
           run = false;
         }
       } else {
         if (candidate.previous === null) {
-          this.head = newElem;
+          this._head = newElem;
           newElem.next = candidate;
           candidate.previous = newElem;
           run = false;
@@ -96,34 +108,34 @@ export class DoubleLinkedList<T> {
       }
     }
 
-    this.length++;
+    this._length++;
   }
 
   remove(value: T): T | null {
     let retVal: T | null = null;
-    if (!this.head) {
+    if (!this._head) {
       return null;
     }
 
-    if (this.head.value === value) {
-      if (this.tail === this.head) {
-        this.tail = null;
+    if (this._head.value === value) {
+      if (this._tail === this._head) {
+        this._tail = null;
       }
-      retVal = this.head.value;
-      this.head = this.head.next;
-      this.length--;
+      retVal = this._head.value;
+      this._head = this._head.next;
+      this._length--;
       return retVal;
     }
 
-    let candidate: Elem<T> | null = this.head;
+    let candidate: Elem<T> | null = this._head;
     if (candidate && candidate.next) {
       if (candidate.next.value === value) {
-        if (this.tail === candidate.next) {
-          this.tail = candidate;
+        if (this._tail === candidate.next) {
+          this._tail = candidate;
         }
         retVal = candidate.next.value;
         candidate.next = candidate.next.next;
-        this.length--;
+        this._length--;
       }
     }
     return retVal;
@@ -131,49 +143,49 @@ export class DoubleLinkedList<T> {
 
   removeFirst(): T | null {
     let retVal: T | null = null;
-    if (!this.head) {
+    if (!this._head) {
       return null;
     }
 
-    retVal = this.head.value;
-    if (this.tail === this.head) {
-      this.tail = null;
-      this.head = null;
+    retVal = this._head.value;
+    if (this._tail === this._head) {
+      this._tail = null;
+      this._head = null;
     } else {
-      if (this.head.next === this.tail) {
-        this.head = this.tail;
+      if (this._head.next === this._tail) {
+        this._head = this._tail;
       } else {
-        this.head = this.head.next;
+        this._head = this._head.next;
       }
     }
-    this.length--;
+    this._length--;
     return retVal;
   }
 
   removeLast(): T | null {
     let retVal: T | null = null;
-    if (!this.tail) {
+    if (!this._tail) {
       return null;
     }
 
-    retVal = this.tail.value;
-    if (this.head === this.tail.previous) {
-      this.tail = this.head;
-      this.length--;
+    retVal = this._tail.value;
+    if (this._head === this._tail.previous) {
+      this._tail = this._head;
+      this._length--;
     } else {
-      if (this.head === this.tail) {
-        this.head = null;
-        this.tail = null;
+      if (this._head === this._tail) {
+        this._head = null;
+        this._tail = null;
       } else {
-        this.tail = this.tail.previous;
+        this._tail = this._tail.previous;
       }
-      this.length--;
+      this._length--;
     }
     return retVal;
   }
 
   has(value: T): boolean {
-    let candidate = this.head;
+    let candidate = this._head;
     if (!candidate) {
       return false;
     }
@@ -185,12 +197,12 @@ export class DoubleLinkedList<T> {
     return true;
   }
 
-  isUnique(value: T): boolean {
-    if (!this.head) {
+  private isUnique(value: T): boolean {
+    if (!this._head) {
       return true;
     }
 
-    let candidate: Elem<T> | null = this.head;
+    let candidate: Elem<T> | null = this._head;
     while (candidate) {
       if (candidate.value === value) {
         return false;
