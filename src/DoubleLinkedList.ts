@@ -211,4 +211,17 @@ export class DoubleLinkedList<T> {
     }
     return true;
   }
+
+  *iterator(): IterableIterator<T> {
+    let candidate: Elem<T> | null = this._head;
+
+    while (candidate) {
+      yield candidate.value;
+      candidate = candidate.next;
+    }
+  }
+
+  [Symbol.iterator]() {
+    return this.iterator();
+  }
 }
