@@ -169,4 +169,33 @@ describe('test unordered not unique list', () => {
     expect(l.length).toBe(1);
     expect(l.head?.next).toBeNull();
   });
+
+  it('iterator and length should yield same length', () => {
+    l.append(1);
+    l.append(2);
+    l.append(3);
+    l.insert(2);
+    l.remove(2);
+    l.insert(1000);
+    let len = 0;
+    for (let _ of l) {
+      len++;
+    }
+    expect(l.length).toBe(len);
+  });
+
+  it('insert Object at the right position', () => {
+    // TODO: figure out how to set a custom comparator when user decides to use anything other than primitive data types.
+    type A = { n: number; s: string };
+    let lA = new DoubleLinkedList<A>();
+    lA.append({ n: 1, s: '1' } as A);
+    lA.append({ n: 3, s: '3' } as A);
+    lA.insert({ n: 2, s: '2' } as A);
+    let len = 0;
+    for (let _ of lA) {
+      console.log(_);
+      len++;
+    }
+    expect(lA.length).toBe(len);
+  });
 });
